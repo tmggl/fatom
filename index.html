@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fatom Fashion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --main:#ff6600;
+      --overlay:rgba(253, 250, 250, 0.55);
+      --text:#ffffff;
+      --shadow:0 10px 30px rgba(0,0,0,.25);
+    }
+
+    body{
+      margin:0;
+      font-family:"Cairo", system-ui, -apple-system, "Segoe UI", Roboto;
+      color:#ffffff;
+      background:#fff;
+    }
+
+    /* ===== Hero ===== */
+    .hero{
+      position:relative;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      color:var(--text);
+      text-align:center;
+      padding:80px 16px 60px;
+    }
+    .hero video{
+      position:absolute; inset:0;
+      width:100%; height:100%;
+      object-fit:cover; z-index:-2;
+    }
+    .hero::after{
+      content:""; position:absolute; inset:0;
+      background:var(--overlay); z-index:-1;
+    }
+
+    .hero-content{
+      width:min(100%, 980px);
+      display:flex; flex-direction:column; align-items:center; gap:18px;
+      padding:0 6px;
+    }
+
+    /* هوية الموقع */
+    .brand-lockup{
+      display:flex; align-items:center; gap:14px;
+      filter: drop-shadow(0 6px 18px rgba(0,0,0,.35));
+    }
+    .brand-badge{
+      width:54px; height:54px; border-radius:14px;
+      background:linear-gradient(145deg, #ff7a1a, #ff6600);
+      display:grid; place-items:center; font-family:"Poppins", sans-serif;
+      font-weight:800; color:#fff; font-size:18px;
+      box-shadow: var(--shadow);
+    }
+    .brand-title{
+      display:flex; flex-direction:column; align-items:center;
+    }
+    .brand-title .en{
+      font-family:"Poppins", sans-serif;
+      font-weight:800; letter-spacing:.5px;
+      font-size: clamp(28px, 5.2vw, 56px);
+      line-height:1.05; margin:0;
+    }
+    .brand-title .ar{
+      font-weight:800;
+      font-size: clamp(18px, 2.8vw, 26px);
+      margin-top:4px; opacity:.95;
+    }
+    .brand-underline{
+      margin-top:10px; width: clamp(120px, 22vw, 260px); height:4px;
+      border-radius:3px;
+      background:linear-gradient(90deg, #ffa86a, var(--main));
+    }
+
+    /* النص */
+    .hero-headline{
+      font-weight:800;
+      font-size: clamp(22px, 3.2vw, 34px);
+      line-height:1.35;
+      margin:10px 0 6px;
+    }
+    .hero-sub{
+      font-size: clamp(14px, 2.2vw, 18px);
+      opacity:.95;
+      margin:0 0 14px;
+      max-width: 820px;
+    }
+
+    /* الأزرار */
+    .cta-row{
+      display:flex; gap:12px; flex-wrap:wrap; justify-content:center;
+      margin-top:6px;
+    }
+    .btn{
+      border:none; cursor:pointer; border-radius:28px;
+      padding:12px 26px; font-size:15px; font-weight:700;
+      transition:.25s; will-change:transform, box-shadow;
+    }
+    /* الزر الأساسي */
+    .btn.primary{
+      background:var(--main); color:#fff;
+      box-shadow:0 10px 24px rgba(255,102,0,.35);
+    }
+    .btn.primary:hover{ background:#e65500; transform:translateY(-1px) }
+
+    /* الزر العكسي */
+    .btn.secondary{
+      background:#fff; color:var(--main);
+      border:2px solid var(--main);
+    }
+    .btn.secondary:hover{
+      background:var(--main); color:#fff;
+    }
+
+    /* الأقسام */
+    .sections{
+      display:grid;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: 420px 420px;
+      gap:20px;
+      padding:70px min(5vw,40px);
+    }
+    .card{
+      position:relative; border-radius:18px; overflow:hidden; color:#fff;
+      display:flex; align-items:flex-end; padding:24px;
+      min-height:280px;
+      box-shadow:0 12px 30px rgba(0,0,0,.18);
+    }
+    .card video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:-2; }
+    .card::after{
+      content:""; position:absolute; inset:0;
+      background:linear-gradient(to top, rgba(0,0,0,.72) 22%, rgba(0,0,0,.28) 70%, rgba(0,0,0,.10) 100%);
+      z-index:-1;
+    }
+    .card h3{ font-size: clamp(20px, 2.6vw, 28px); margin:0 0 8px; }
+    .card p{ font-size: clamp(13px, 2vw, 16px); margin:0 0 14px; max-width:90%; }
+    .card .btn{ font-size:14px; padding:10px 18px }
+
+    .card.dress{ grid-row: span 2; }
+
+    @media (max-width: 1024px){
+      .sections{
+        grid-template-columns: 1.4fr 1fr;
+        grid-template-rows: 380px 380px;
+        gap:16px; padding:56px 24px;
+      }
+    }
+    @media (max-width: 768px){
+      .hero{ padding:92px 14px 54px }
+      .sections{
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        padding:42px 18px;
+      }
+      .card{ height: 300px; padding:20px }
+      .card p{ max-width:100% }
+    }
+    @media (max-width: 480px){
+      .brand-badge{ width:46px; height:46px; border-radius:12px; font-size:16px }
+      .brand-underline{ height:3px }
+      .card{ height: 240px }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- الهيدر من ملفه -->
+  <div id="header"></div>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero" aria-label="العرض الرئيسي">
+    <video autoplay muted loop playsinline>
+      <source src="video.mp4" type="video/mp4">
+      متصفحك لا يدعم الفيديو.
+    </video>
+
+    <div class="hero-content">
+      <div class="brand-lockup" aria-label="هوية الموقع">
+        <div class="brand-badge" aria-hidden="true">FF</div>
+        <div class="brand-title">
+          <h1 class="en" dir="ltr">Fatom Fashion</h1>
+          <div class="ar">فتوم فاشن</div>
+          <div class="brand-underline" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <h2 class="hero-headline">أناقة تُشبهك — تصاميم عصرية تبرز حضورك في كل مناسبة</h2>
+      <p class="hero-sub">اختاري من تشكيلاتنا المنتقاة بعناية: فساتين بتفاصيل راقية، عبايات بلمسة خليجية حديثة، وجاكيتات بخامات فاخرة.</p>
+
+      <div class="cta-row">
+        <button class="btn primary" onclick="document.getElementById('sections').scrollIntoView({behavior:'smooth'})">ابدئي التسوّق الآن</button>
+        <button class="btn secondary" onclick="document.getElementById('sections').scrollIntoView({behavior:'smooth'})">استكشفي الأقسام</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== الأقسام ===== -->
+  <section class="sections" id="sections" aria-label="الأقسام">
+    <article class="card dress">
+      <video autoplay muted loop playsinline>
+        <source src="dress.mp4" type="video/mp4">
+      </video>
+      <div>
+        <h3>الفساتين</h3>
+        <p>تفاصيل دقيقة، قصّات أنثوية، ولمسات فاخرة لتوقّعي إطلالة تُحكى.</p>
+        <button class="btn">تسوقي الفساتين</button>
+      </div>
+    </article>
+
+    <article class="card abaya">
+      <video autoplay muted loop playsinline>
+        <source src="ab.mp4" type="video/mp4">
+      </video>
+      <div>
+        <h3>العبايات</h3>
+        <p>هوية خليجية بروح عصرية—أناقة محتشمة تُبرز ذوقك الرفيع.</p>
+        <button class="btn">تسوقي العبايات</button>
+      </div>
+    </article>
+
+    <article class="card coat">
+      <video autoplay muted loop playsinline>
+        <source src="co.mp4" type="video/mp4">
+      </video>
+      <div>
+        <h3>الجاكيتات</h3>
+        <p>خامات مختارة بعناية تمنحك دفئًا وأناقة في آن واحد.</p>
+        <button class="btn">تسوقي الجاكيتات</button>
+      </div>
+    </article>
+  </section>
+
+  <!-- الفوتر من ملفه -->
+  <div id="footer"></div>
+
+  <script>
+    async function loadTemplate(id, file) {
+      try {
+        const res = await fetch(file);
+        if (!res.ok) throw new Error("فشل التحميل");
+        const html = await res.text();
+        const mount = document.getElementById(id);
+        mount.innerHTML = html;
+        mount.querySelectorAll("script").forEach(s => {
+          const ns = document.createElement("script");
+          if (s.src) ns.src = s.src; else ns.textContent = s.textContent;
+          document.body.appendChild(ns); s.remove();
+        });
+      } catch (err) {
+        console.error("Load error:", file, err);
+        document.getElementById(id).innerHTML =
+          "<p style='text-align:center;color:#c00;'>تعذر تحميل " + file + "</p>";
+      }
+    }
+    loadTemplate("header", "header.html");
+    loadTemplate("footer", "footer.html");
+  </script>
+
+</body>
+</html>

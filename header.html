@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Header | Fatom Fashion</title>
+  <!-- خط عربي أنيق -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --accent:#ff6600;
+      --text:#333;
+      --muted:#666;
+      --bg1:#ffffff;
+      --bg2:#f5f5f5;
+      --shadow:0 8px 20px rgba(0,0,0,.08);
+      --radius:14px;
+    }
+
+    /* ====== Reset بسيط ====== */
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{font-family:"Cairo",system-ui,-apple-system,Segoe UI,Roboto; color:var(--text)}
+
+    /* ====== شريط علوي ====== */
+    header{
+      position:sticky; top:0; z-index:1000;
+      background: linear-gradient(90deg, var(--bg2), var(--bg1));
+      box-shadow: 0 2px 6px rgba(0,0,0,.06);
+      backdrop-filter:saturate(1.2) blur(6px);
+    }
+    .nav-wrap{
+      max-width:1200px; margin:auto;
+      padding:12px 18px;
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+    }
+
+    /* الشعار */
+    .logo{
+      display:flex; align-items:center; gap:10px;
+      text-decoration:none;
+      color:var(--accent); font-weight:700; font-size:22px;
+      letter-spacing:.2px;
+    }
+    .logo-badge{
+      width:34px; height:34px; border-radius:10px;
+      background:linear-gradient(145deg, #ff7a1a, #ff6600);
+      display:grid; place-items:center; color:#fff;
+      box-shadow: var(--shadow);
+      font-weight:700; font-size:14px;
+    }
+
+    /* الروابط (ديسكتوب) */
+    nav ul{
+      list-style:none; margin:0; padding:0;
+      display:flex; align-items:center; gap:22px;
+    }
+    nav a{
+      text-decoration:none; color:#444; font-size:16px; font-weight:600;
+      padding:10px 14px; border-radius:10px; transition:.25s;
+    }
+    nav a:hover, nav a:focus-visible{ color:#000; background:#fff; box-shadow:var(--shadow); outline:none }
+    .cta{
+      background:var(--accent); color:#fff !important;
+      box-shadow:0 6px 16px rgba(255,102,0,.25);
+    }
+    .cta:hover{ transform:translateY(-1px) }
+
+    /* زر البرغر (جوال) */
+    .burger{
+      display:none; width:46px; height:40px; border:none; cursor:pointer;
+      background:transparent; border-radius:12px; position:relative;
+    }
+    .burger:focus-visible{ outline:2px solid var(--accent) }
+    .burger .line{
+      position:absolute; left:10px; right:10px; height:3px; border-radius:3px; background:#333; transition:.25s;
+    }
+    .burger .line:nth-child(1){ top:12px }
+    .burger .line:nth-child(2){ top:19px }
+    .burger .line:nth-child(3){ top:26px }
+
+    /* Drawer (القائمة الجانبية للجوال) */
+    .overlay{
+      position:fixed; inset:0; background:rgba(0,0,0,.35);
+      opacity:0; visibility:hidden; transition:.25s; z-index:999;
+    }
+    .drawer{
+      position:fixed; top:0; right:0; height:100vh; width:min(86vw, 360px);
+      background:#fff; box-shadow:-10px 0 24px rgba(0,0,0,.12);
+      transform:translateX(100%); transition:transform .3s ease; z-index:1000;
+      display:flex; flex-direction:column; padding:18px;
+      border-top-left-radius:18px; border-bottom-left-radius:18px;
+    }
+    .drawer header{
+      position:static; background:transparent; box-shadow:none;
+    }
+    .drawer-top{
+      display:flex; align-items:center; justify-content:space-between; gap:10px; padding-bottom:6px;
+      border-bottom:1px dashed #eee;
+    }
+    .close-btn{
+      border:none; background:#fff; width:40px; height:40px; border-radius:12px; cursor:pointer;
+      box-shadow:var(--shadow); display:grid; place-items:center;
+    }
+    .close-btn:focus-visible{ outline:2px solid var(--accent) }
+    .close-x{
+      position:relative; width:18px; height:18px;
+    }
+    .close-x::before,.close-x::after{
+      content:""; position:absolute; inset:0; margin:auto; width:100%; height:2px; background:#222; border-radius:2px;
+    }
+    .close-x::before{ transform:rotate(45deg) }
+    .close-x::after{ transform:rotate(-45deg) }
+
+    .drawer nav ul{
+      display:flex; flex-direction:column; gap:8px; padding:14px 4px; margin:8px 0 0 0;
+    }
+    .drawer nav a{
+      display:block; padding:12px 14px; border-radius:12px; color:#222; background:#fafafa;
+      border:1px solid #f1f1f1;
+    }
+    .drawer nav a:hover{ background:#fff; box-shadow:var(--shadow) }
+    .drawer .cta{ text-align:center }
+
+    /* حالة الفتح */
+    .is-open .overlay{ opacity:1; visibility:visible }
+    .is-open .drawer{ transform:translateX(0) }
+    .is-open .burger .line:nth-child(1){ transform:translateY(7px) rotate(-45deg) }
+    .is-open .burger .line:nth-child(2){ opacity:0 }
+    .is-open .burger .line:nth-child(3){ transform:translateY(-7px) rotate(45deg) }
+
+    /* تجاوبية */
+    @media (max-width: 992px){
+      nav.desktop{ display:none }
+      .burger{ display:block }
+    }
+    @media (min-width: 993px){
+      .overlay, .drawer{ display:none }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- الشريط العلوي -->
+  <header aria-label="الشريط العلوي">
+    <div class="nav-wrap">
+      <a href="index.html" class="logo" aria-label="العودة للصفحة الرئيسية">
+        <span class="logo-badge">FF</span>
+        Fatom Fashion
+      </a>
+
+      <!-- روابط الديسكتوب -->
+      <nav class="desktop" aria-label="روابط الموقع">
+        <ul>
+          <li><a href="#">الرئيسية</a></li>
+          <li><a href="#">الأزياء</a></li>
+          <li><a href="#">العروض</a></li>
+          <li><a href="#">تواصل معنا</a></li>
+          <li><a href="#" class="cta">تسوقي الآن</a></li>
+        </ul>
+      </nav>
+
+      <!-- زر البرغر للجوال -->
+      <button class="burger" id="burger" aria-label="فتح القائمة" aria-expanded="false" aria-controls="mobile-drawer">
+        <span class="line"></span><span class="line"></span><span class="line"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Overlay + Drawer للجوال -->
+  <div class="overlay" id="overlay" tabindex="-1" aria-hidden="true"></div>
+
+  <aside class="drawer" id="mobile-drawer" role="dialog" aria-modal="true" aria-label="قائمة الجوال">
+    <div class="drawer-top">
+      <a href="index.html" class="logo" style="color:var(--accent)">
+        <span class="logo-badge">FF</span> Fatom Fashion
+      </a>
+      <button class="close-btn" id="closeBtn" aria-label="إغلاق القائمة">
+        <span class="close-x" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <nav aria-label="روابط الجوال">
+      <ul>
+        <li><a href="#">الرئيسية</a></li>
+        <li><a href="#">الأقسام</a></li>
+        <li><a href="#">العروض</a></li>
+        <li><a href="#">تواصل معنا</a></li>
+        <li><a href="#" class="cta">تسوقي الآن</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <script>
+    // عناصر
+    const root = document.documentElement;
+    const burger = document.getElementById('burger');
+    const drawer = document.getElementById('mobile-drawer');
+    const overlay = document.getElementById('overlay');
+    const closeBtn = document.getElementById('closeBtn');
+
+    const open = () => {
+      document.body.classList.add('is-open');
+      burger.setAttribute('aria-expanded', 'true');
+      overlay.setAttribute('aria-hidden', 'false');
+      // نقل التركيز داخل القائمة
+      setTimeout(()=> drawer.querySelector('a, button')?.focus(), 50);
+    };
+    const close = () => {
+      document.body.classList.remove('is-open');
+      burger.setAttribute('aria-expanded', 'false');
+      overlay.setAttribute('aria-hidden', 'true');
+      burger.focus();
+    };
+
+    burger.addEventListener('click', () => {
+      if (document.body.classList.contains('is-open')) close(); else open();
+    });
+    closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', close);
+
+    // إغلاق بـ Esc
+    window.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape' && document.body.classList.contains('is-open')) close();
+    });
+
+    // إغلاق عند الضغط على أحد الروابط داخل القائمة
+    drawer.addEventListener('click', (e)=>{
+      const target = e.target.closest('a');
+      if (target) close();
+    });
+  </script>
+</body>
+</html>
