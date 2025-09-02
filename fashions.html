@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>الأزياء | Fatom Fashion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --accent:#ff6600;
+      --text:#222;
+      --muted:#666;
+      --bg:#ffffff;
+      --bg2:#f7f7f7;
+      --card:#fff;
+      --shadow:0 8px 24px rgba(0,0,0,.08);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{font-family:"Cairo",system-ui,-apple-system,Segoe UI,Roboto;color:var(--text);background:var(--bg)}
+    a{color:inherit}
+    /* Header (مختصر مع نفس الهوية) */
+    header{position:sticky; top:0; z-index:1000; background: linear-gradient(90deg,var(--bg2),var(--bg)); box-shadow: 0 2px 6px rgba(0,0,0,.06); backdrop-filter:saturate(1.2) blur(6px)}
+    .nav-wrap{max-width:1200px; margin:auto; padding:12px 18px; display:flex; align-items:center; justify-content:space-between; gap:16px}
+    .logo{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--accent); font-weight:700; font-size:22px}
+    .logo-badge{width:34px; height:34px; border-radius:10px; background:linear-gradient(145deg, #ff7a1a, #ff6600); display:grid; place-items:center; color:#fff; box-shadow: var(--shadow); font-weight:700; font-size:14px}
+    nav ul{list-style:none; margin:0; padding:0; display:flex; align-items:center; gap:22px}
+    nav a{text-decoration:none; color:#444; font-size:16px; font-weight:600; padding:10px 14px; border-radius:10px; transition:.25s}
+    nav a:hover, nav a:focus-visible{ color:#000; background:#fff; box-shadow:var(--shadow); outline:none }
+    .cta{background:var(--accent); color:#fff !important; box-shadow:0 6px 16px rgba(255,102,0,.25)}
+    .cta:hover{ transform:translateY(-1px) }
+    .burger{display:none; width:46px; height:40px; border:none; cursor:pointer; background:transparent; border-radius:12px; position:relative}
+    .burger .line{position:absolute; left:10px; right:10px; height:3px; border-radius:3px; background:#333; transition:.25s}
+    .burger .line:nth-child(1){ top:12px } .burger .line:nth-child(2){ top:19px } .burger .line:nth-child(3){ top:26px }
+    .overlay{position:fixed; inset:0; background:rgba(0,0,0,.35); opacity:0; visibility:hidden; transition:.25s; z-index:999}
+    .drawer{position:fixed; top:0; right:0; height:100vh; width:min(86vw, 360px); background:#fff; box-shadow:-10px 0 24px rgba(0,0,0,.12); transform:translateX(100%); transition:transform .3s ease; z-index:1000; display:flex; flex-direction:column; padding:18px; border-top-left-radius:18px; border-bottom-left-radius:18px}
+    .drawer-top{display:flex; align-items:center; justify-content:space-between; gap:10px; padding-bottom:6px; border-bottom:1px dashed #eee}
+    .close-btn{border:none; background:#fff; width:40px; height:40px; border-radius:12px; cursor:pointer; box-shadow:var(--shadow); display:grid; place-items:center}
+    .close-x{position:relative; width:18px; height:18px}
+    .close-x::before,.close-x::after{content:""; position:absolute; inset:0; margin:auto; width:100%; height:2px; background:#222; border-radius:2px}
+    .close-x::before{ transform:rotate(45deg) } .close-x::after{ transform:rotate(-45deg) }
+    .is-open .overlay{ opacity:1; visibility:visible } .is-open .drawer{ transform:translateX(0) }
+    .is-open .burger .line:nth-child(1){ transform:translateY(7px) rotate(-45deg) }
+    .is-open .burger .line:nth-child(2){ opacity:0 }
+    .is-open .burger .line:nth-child(3){ transform:translateY(-7px) rotate(45deg) }
+    @media (max-width: 992px){ nav.desktop{ display:none } .burger{ display:block } }
+    @media (min-width: 993px){ .overlay, .drawer{ display:none } }
+
+    /* Hero صغيرة */
+    .hero{max-width:1200px;margin:20px auto 0; padding:16px 18px}
+    .hero .box{background:linear-gradient(140deg,#fff, #fff0e6); border:1px solid #ffe0cc; border-radius:var(--radius); padding:20px; box-shadow:var(--shadow)}
+    .hero h1{margin:0 0 8px; font-size:24px}
+    .hero p{margin:0; color:var(--muted)}
+
+    /* شريط الأدوات */
+    .toolbar{max-width:1200px; margin:14px auto 0; padding:0 18px}
+    .tools{display:grid; grid-template-columns:1.2fr 1fr 1fr auto; gap:10px}
+    .field{position:relative}
+    .field input,.field select{width:100%; padding:12px 14px; border:1px solid #eee; border-radius:12px; background:#fff; font:inherit; outline:none}
+    .field input:focus,.field select:focus{border-color:#ffd5b8; box-shadow:0 0 0 4px rgba(255,102,0,.08)}
+    .btn{border:none; padding:12px 16px; border-radius:12px; background:var(--accent); color:#fff; font-weight:700; cursor:pointer; box-shadow:0 6px 16px rgba(255,102,0,.25)}
+    .btn:disabled{opacity:.6; cursor:not-allowed}
+
+    /* الشبكة */
+    .grid{max-width:1200px; margin:16px auto 38px; padding:0 18px; display:grid; grid-template-columns:repeat(4, 1fr); gap:16px}
+    @media (max-width:1200px){ .grid{grid-template-columns:repeat(3, 1fr)} }
+    @media (max-width:780px){ .grid{grid-template-columns:repeat(2, 1fr)} .tools{grid-template-columns:1fr 1fr; grid-auto-rows:1fr; grid-auto-flow:row} }
+    @media (max-width:420px){ .grid{grid-template-columns:1fr} }
+
+    .card{background:var(--card); border:1px solid #eee; border-radius:var(--radius); overflow:hidden; box-shadow: var(--shadow); display:flex; flex-direction:column}
+    .thumb{position:relative; aspect-ratio: 1 / 1.1; overflow:hidden}
+    .thumb img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .35s ease}
+    .card:hover .thumb img{ transform:scale(1.04) }
+    .badge{position:absolute; top:10px; left:10px; background:var(--accent); color:#fff; font-size:12px; padding:6px 10px; border-radius:999px}
+    .content{padding:12px 14px; display:grid; gap:6px}
+    .title{font-weight:700; font-size:16px}
+    .meta{display:flex; align-items:center; justify-content:space-between; gap:10px; color:var(--muted); font-size:14px}
+    .price{font-weight:800; color:#111}
+    .actions{display:flex; gap:8px; margin-top:8px}
+    .ghost{background:#fafafa; color:#333; border:1px solid #eee}
+    .ghost:hover{background:#fff}
+
+    /* تنبيه لا توجد نتائج */
+    .empty{max-width:1200px; margin:24px auto; padding:0 18px; color:var(--muted)}
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header aria-label="الشريط العلوي">
+    <div class="nav-wrap">
+      <a href="index.html" class="logo" aria-label="العودة للصفحة الرئيسية">
+        <span class="logo-badge">FF</span> Fatom Fashion
+      </a>
+      <nav class="desktop" aria-label="روابط الموقع">
+        <ul>
+          <li><a href="index.html">الرئيسية</a></li>
+          <li><a href="fashions.html" aria-current="page" style="background:#fff; box-shadow:0 6px 16px rgba(0,0,0,.06)">الأزياء</a></li>
+          <li><a href="#">العروض</a></li>
+          <li><a href="#">تواصل معنا</a></li>
+          <li><a href="#" class="cta">تسوقي الآن</a></li>
+        </ul>
+      </nav>
+      <button class="burger" id="burger" aria-label="فتح القائمة" aria-expanded="false" aria-controls="mobile-drawer">
+        <span class="line"></span><span class="line"></span><span class="line"></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="overlay" id="overlay" tabindex="-1" aria-hidden="true"></div>
+  <aside class="drawer" id="mobile-drawer" role="dialog" aria-modal="true" aria-label="قائمة الجوال">
+    <div class="drawer-top">
+      <a href="index.html" class="logo" style="color:var(--accent)">
+        <span class="logo-badge">FF</span> Fatom Fashion
+      </a>
+      <button class="close-btn" id="closeBtn" aria-label="إغلاق القائمة">
+        <span class="close-x" aria-hidden="true"></span>
+      </button>
+    </div>
+    <nav aria-label="روابط الجوال">
+      <ul>
+        <li><a href="index.html">الرئيسية</a></li>
+        <li><a href="fashions.html">الأزياء</a></li>
+        <li><a href="#">العروض</a></li>
+        <li><a href="#">تواصل معنا</a></li>
+        <li><a href="#" class="cta">تسوقي الآن</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Hero -->
+  <section class="hero" aria-label="ترويسة القسم">
+    <div class="box">
+      <h1>مجموعة الأزياء</h1>
+      <p>تسوقي أحدث التصاميم — فلترة سهلة، بحث سريع، وأسعار تنافسية.</p>
+    </div>
+  </section>
+
+  <!-- أدوات التصفية -->
+  <section class="toolbar" aria-label="أدوات التصفية والبحث">
+    <div class="tools">
+      <div class="field">
+        <input id="q" type="search" inputmode="search" placeholder="ابحثي عن: فستان، عباءة، صيفي…" aria-label="بحث">
+      </div>
+      <div class="field">
+        <select id="cat" aria-label="التصنيف">
+          <option value="">كل التصنيفات</option>
+          <option value="عباءة">عباءات</option>
+          <option value="فستان">فساتين</option>
+          <option value="طقم">أطقم</option>
+          <option value="كاجوال">كاجوال</option>
+        </select>
+      </div>
+      <div class="field">
+        <select id="sort" aria-label="الترتيب">
+          <option value="new">الأحدث</option>
+          <option value="low">الأقل سعراً</option>
+          <option value="high">الأعلى سعراً</option>
+        </select>
+      </div>
+      <button class="btn" id="apply">تطبيق</button>
+    </div>
+  </section>
+
+  <!-- الشبكة -->
+  <main class="grid" id="grid" aria-live="polite"></main>
+  <p class="empty" id="empty" hidden>لا توجد نتائج مطابقة حالياً.</p>
+
+  <script>
+    // ======= Nav (نفس سلوك القائمة الجانبية) =======
+    const burger = document.getElementById('burger');
+    const drawer = document.getElementById('mobile-drawer');
+    const overlay = document.getElementById('overlay');
+    const closeBtn = document.getElementById('closeBtn');
+    const openNav = () => { document.body.classList.add('is-open'); burger.setAttribute('aria-expanded','true'); overlay.setAttribute('aria-hidden','false'); setTimeout(()=> drawer.querySelector('a,button')?.focus(),50); };
+    const closeNav = () => { document.body.classList.remove('is-open'); burger.setAttribute('aria-expanded','false'); overlay.setAttribute('aria-hidden','true'); burger?.focus(); };
+    burger?.addEventListener('click', ()=> document.body.classList.contains('is-open') ? closeNav() : openNav());
+    closeBtn?.addEventListener('click', closeNav);
+    overlay?.addEventListener('click', closeNav);
+    window.addEventListener('keydown', e => { if(e.key==='Escape' && document.body.classList.contains('is-open')) closeNav(); });
+
+    // ======= بيانات وهمية (تقدر تربطها لاحقًا بباك-إند) =======
+    const ITEMS = [
+      {id:1, title:'عباءة سوداء مطرزة', cat:'عباءة', price:349, badge:'جديد', img:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&q=80'},
+      {id:2, title:'فستان سهرة أنيق', cat:'فستان', price:599, badge:'حصري', img:'https://images.unsplash.com/photo-1542060748-10c28b62716f?w=800&q=80'},
+      {id:3, title:'طقم نسائي عملي', cat:'طقم', price:279, badge:'عرض', img:'https://images.unsplash.com/photo-1520975922284-406838c12d1c?w=800&q=80'},
+      {id:4, title:'فستان كاجوال صيفي', cat:'كاجوال', price:199, badge:'جديد', img:'https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?w=800&q=80'},
+      {id:5, title:'عباءة رسمية فاخرة', cat:'عباءة', price:749, badge:'حصري', img:'https://images.unsplash.com/photo-1544441892-2d8b3b4b7a47?w=800&q=80'},
+      {id:6, title:'فستان يومي بسيط', cat:'فستان', price:229, badge:'', img:'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=800&q=80'},
+      {id:7, title:'طقم مناسبات', cat:'طقم', price:429, badge:'جديد', img:'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80'},
+      {id:8, title:'طقم كاجوال مريح', cat:'كاجوال', price:259, badge:'', img:'https://images.unsplash.com/photo-1458530970867-aaa3700e966d?w=800&q=80'}
+    ];
+
+    // ======= DOM =======
+    const grid = document.getElementById('grid');
+    const emptyEl = document.getElementById('empty');
+    const q = document.getElementById('q');
+    const cat = document.getElementById('cat');
+    const sort = document.getElementById('sort');
+    const apply = document.getElementById('apply');
+
+    // ======= Render =======
+    function render(items){
+      grid.innerHTML = '';
+      if(!items.length){ emptyEl.hidden = false; return; }
+      emptyEl.hidden = true;
+
+      const frag = document.createDocumentFragment();
+      for(const it of items){
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="thumb">
+            <img src="${it.img}" alt="${it.title}" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+            ${it.badge ? `<span class="badge">${it.badge}</span>` : ``}
+          </div>
+          <div class="content">
+            <div class="title">${it.title}</div>
+            <div class="meta">
+              <span class="muted">${it.cat}</span>
+              <span class="price">${it.price} ر.س</span>
+            </div>
+            <div class="actions">
+              <button class="btn" data-id="${it.id}">أضف للسلة</button>
+              <button class="btn ghost" data-id="${it.id}" data-more>عرض التفاصيل</button>
+            </div>
+          </div>
+        `;
+        frag.appendChild(card);
+      }
+      grid.appendChild(frag);
+    }
+
+    // ======= Filter/Sort =======
+    function applyFilters(){
+      const term = q.value.trim().toLowerCase();
+      const c = cat.value;
+      const s = sort.value;
+      let out = ITEMS.filter(x =>
+        (!c || x.cat === c) &&
+        (!term || x.title.toLowerCase().includes(term))
+      );
+      if(s==='low') out.sort((a,b)=> a.price - b.price);
+      if(s==='high') out.sort((a,b)=> b.price - a.price);
+      if(s==='new') out = out; // مكان للمنطق لاحقاً
+      render(out);
+    }
+
+    // أحداث
+    apply.addEventListener('click', applyFilters);
+    q.addEventListener('keydown', e=>{ if(e.key==='Enter') applyFilters(); });
+
+    // أزرار البطاقات (ديمو)
+    grid.addEventListener('click', e=>{
+      const addBtn = e.target.closest('button.btn:not(.ghost)');
+      const moreBtn = e.target.closest('button[data-more]');
+      if(addBtn){ 
+        const id = addBtn.dataset.id;
+        alert('تمت إضافة المنتج رقم '+id+' إلى السلة (تجريبي).');
+      }
+      if(moreBtn){
+        const id = moreBtn.dataset.id;
+        alert('تفاصيل المنتج رقم '+id+' (تجريبي).');
+      }
+    });
+
+    // أول تحميل
+    render(ITEMS);
+  </script>
+</body>
+</html>
